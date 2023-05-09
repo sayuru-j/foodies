@@ -1,7 +1,55 @@
 import image from "../../assets/mock-login.png";
 import logo from "../../assets/foodies-logo-text.png";
 
+import { GoogleLogin } from "react-google-login";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 function Login() {
+  const navigate = useNavigate();
+
+  const onSuccess = (res) => {
+    // Getting Login Details to a variable
+    let loginDetails = {
+      accessToken: res.accessToken,
+      user: {
+        fullname: res.profileObj.name,
+        email: res.profileObj.email,
+        username: res.profileObj?.name?.toLowerCase(),
+        avatar: res.profileObj.imageUrl,
+      },
+    };
+
+    // console.log(loginDetails);
+
+    // Saving user in API
+    const saveUserInApi = async () => {
+      const response = axios.post(
+        `${import.meta.env.VITE_API_URL}/user/saveUser`,
+        {
+          username: res?.profileObj?.name?.toLowerCase(),
+          city: "Unknown",
+          avatar: res?.profileObj?.imageUrl,
+        }
+      );
+
+      // Checks whether user is already logged
+      // if (!localStorage.getItem("loginDetails")) {
+      //   saveUserInApi();
+      // }
+    };
+
+    // Saves User Details in LocalStorage
+    localStorage.setItem("loginDetails", JSON.stringify(loginDetails));
+    saveUserInApi();
+
+    navigate("/");
+  };
+
+  const onFailure = (res) => {
+    console.log("LOGIN FAILED!", res);
+  };
+
   return (
     <div className="bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] from-sky-400 to-indigo-900">
       <div className="grid lg:grid-cols-5 grid-col-1 h-screen px-2">
@@ -51,18 +99,22 @@ function Login() {
                   Or
                 </h1>
                 <div className="flex flex-col gap-2">
-                  <button
-                    className="inline-block shadow-sm bg-[#3c70ad] hover:bg-blue-600 w-full py-2 text-sm rounded-xl border-2 border-[#1e335b] hover:border-blue-600 text-white font-semibold transition-all duration-200 ease-out"
-                    type="button"
-                  >
-                    SIGN IN WITH FACEBOOK
-                  </button>
-                  <button
-                    className="inline-block shadow-sm bg-[#3c70ad] hover:bg-red-600 w-full py-2 text-sm rounded-xl border-2 border-[#1e335b] hover:border-red-600 text-white font-semibold transition-all duration-200 ease-out"
-                    type="button"
-                  >
-                    SIGN IN WITH GOOGLE
-                  </button>
+                  <GoogleLogin
+                    render={(renderProps) => (
+                      <button
+                        onClick={renderProps.onClick}
+                        className="inline-block shadow-lg bg-[#3c70ad] hover:bg-[#02b875] w-full py-2 text-sm rounded-xl border-2 border-[#1e335b] hover:border-[#02b875] text-white font-semibold transition-all duration-200 ease-out"
+                      >
+                        SIGN IN WITH GOOGLE
+                      </button>
+                    )}
+                    clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+                    onSuccess={onSuccess}
+                    onFailure={onFailure}
+                    cookiePolicy={"single_host_origin"}
+                    isSignedIn={true}
+                    scope="profile email"
+                  />
                 </div>
               </form>
             </div>

@@ -30,6 +30,7 @@ function Post() {
 
   useEffect(() => {
     getPosts();
+    setIsDeleted(false);
   }, [isDeleted]);
 
   const handleDelete = async (postid) => {

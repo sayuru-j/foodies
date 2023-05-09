@@ -3,9 +3,26 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 import NoContextMenuImage from "../../helpers/NoContextMenuImage";
+import { GoogleLogout } from "react-google-login";
+import { useNavigate } from "react-router-dom";
 
 function MiniProfile() {
   const [users, setUsers] = useState([]);
+
+  const [loginDetails, setLoginDetails] = useState("");
+
+  const navigate = useNavigate();
+
+  const onLogoutSuccess = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    let loginDetails = JSON.parse(localStorage.getItem("loginDetails"));
+
+    setLoginDetails(loginDetails);
+  }, []);
 
   const getUsers = async () => {
     const response = await axios("http://localhost:8080/api/v1/user/getUsers");
@@ -21,16 +38,29 @@ function MiniProfile() {
       <div className="flex items-center justify-between px-2 py-5 border-b-[1px] shadow-sm rounded-lg">
         <div className="flex items-center gap-2">
           <NoContextMenuImage
-            className="w-12 h-12 rounded-full object-cover border-[2px] p-[2px] border-slate-900"
-            src="https://cdn.flipit.money/img/flips/zwEI9FB1xgPmEOHw024FoLglDcQRMuMQm6vUu3TN.jpg"
+            className="w-12 h-12 rounded-full object-cover border-[2px] p-[2px]"
+            src={loginDetails?.user?.avatar}
             alt=""
           />
-          <div className="flex flex-col items-center justify-center">
-            <h1 className="font-semibold text-sm">username</h1>
-            <p className="text-sm">Full Name</p>
+          <div className="flex flex-col justify-center">
+            <h1 className="font-semibold text-sm">
+              {loginDetails?.user?.username}
+            </h1>
+            <p className="text-sm">{loginDetails?.user?.fullname}</p>
           </div>
         </div>
-        <h1 className="text-sm font-medium">Log Out</h1>
+        <GoogleLogout
+          render={(renderProps) => (
+            <button
+              onClick={renderProps.onClick}
+              className="text-sm font-medium"
+            >
+              Log Out
+            </button>
+          )}
+          clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+          onLogoutSuccess={onLogoutSuccess}
+        />
       </div>
 
       <div className="px-2 flex flex-col rounded-lg">

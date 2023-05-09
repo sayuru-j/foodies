@@ -1,17 +1,23 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function AddPost() {
   const navigate = useNavigate();
+  const [loginDetails, setLoginDetails] = useState("");
+
+  useEffect(() => {
+    let loginDetails = JSON.parse(localStorage.getItem("loginDetails"));
+
+    setLoginDetails(loginDetails);
+  }, []);
 
   const [state, setState] = useState({
     caption: "",
     photo: "",
-    userid: "252",
-    username: "sayuru",
-    avatar:
-      "https://cdna.artstation.com/p/assets/images/images/018/649/560/large/florian-dreyer-portrait2.jpg?1560191987",
+    userid: "",
+    username: "",
+    avatar: "",
   });
 
   const [image, setImage] = useState("");
@@ -46,9 +52,9 @@ function AddPost() {
         caption,
         photo: imageUrl,
         userid,
-        username,
-        avatar,
-        likes: [1, 2, 3],
+        username: loginDetails?.user?.username,
+        avatar: loginDetails?.user?.avatar,
+        likes: [],
       }
     );
   };
