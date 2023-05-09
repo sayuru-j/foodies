@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 
+import NoContextMenuImage from "../../helpers/NoContextMenuImage";
+
 function MiniProfile() {
   const [users, setUsers] = useState([]);
 
@@ -18,7 +20,7 @@ function MiniProfile() {
     <div className="max-w-sm h-[600px] w-full flex flex-col gap-2">
       <div className="flex items-center justify-between px-2 py-5 border-b-[1px] shadow-sm rounded-lg">
         <div className="flex items-center gap-2">
-          <img
+          <NoContextMenuImage
             className="w-12 h-12 rounded-full object-cover border-[2px] p-[2px] border-slate-900"
             src="https://cdn.flipit.money/img/flips/zwEI9FB1xgPmEOHw024FoLglDcQRMuMQm6vUu3TN.jpg"
             alt=""
@@ -39,7 +41,7 @@ function MiniProfile() {
             key={user.userid}
           >
             <div className="flex items-center justify-center gap-2">
-              <img
+              <NoContextMenuImage
                 className="w-8 h-8 object-cover rounded-full"
                 src={user.avatar}
                 alt=""
