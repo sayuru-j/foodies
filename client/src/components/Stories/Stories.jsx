@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import NoContextMenuImage from "../../helpers/NoContextMenuImage";
 
 function Stories() {
   // const [suggestions, setSuggestions] = useState([]);
@@ -34,7 +35,8 @@ function Stories() {
         >
           <div className="flex flex-col items-center justify-center">
             <div className="bg-gradient-to-r from-orange-500 via-primary/50 to-secondary rounded-full p-[2px]">
-              <img
+              <NoContextMenuImage
+                onContextMenu={(e) => e.preventDefault()}
                 className="rounded-full w-12 h-12 object-cover border-2"
                 src={story.avatar}
                 alt=""
