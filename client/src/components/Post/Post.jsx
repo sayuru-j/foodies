@@ -11,6 +11,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import NoContextMenuImage from "../../helpers/NoContextMenuImage";
 
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
+
 function Post() {
   const [posts, setPosts] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
@@ -52,7 +57,7 @@ function Post() {
               />
               <div className="flex flex-col">
                 <h1 className="font-semibold text-sm">{post.username}</h1>
-                <p className="text-xs">{post.created}</p>
+                <p className="text-xs">{dayjs(post.created).fromNow()}</p>
               </div>
             </div>
             {!optionIsToggled ? (
