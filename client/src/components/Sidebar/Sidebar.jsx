@@ -10,6 +10,7 @@ import {
 import logo from "../../assets/foodies-logo-text.png";
 import logoText from "../../assets/foodies-logo.png";
 import { useState } from "react";
+import NoContextMenuImage from "../../helpers/NoContextMenuImage";
 
 function Sidebar() {
   const [toggle, setToggle] = useState(false);
@@ -17,10 +18,10 @@ function Sidebar() {
     <div className="fixed left-0 z-50 md:flex hidden bg-white flex-col px-2 py-2 justify-between h-screen lg:w-64 md:w-16 border-r-[1px] border-slate-950/5 transition-all duration-500 ease-out ">
       <div className="flex flex-col justify-center gap-14">
         <div className="p-2 lg:block hidden" id="top">
-          <img className="w-44" src={logo} alt="" />
+          <NoContextMenuImage className="w-44" src={logo} alt="" />
         </div>
         <div className="p-2 md:block lg:hidden hidden" id="top">
-          <img className="w-full" src={logoText} alt="" />
+          <NoContextMenuImage className="w-full" src={logoText} alt="" />
         </div>
 
         <div id="mid" className="flex flex-col gap-3 h-[88vh]">
@@ -53,7 +54,8 @@ function Sidebar() {
 
           <div className="flex justify-center items-center hover:bg-accent/30 rounded-md p-2 lg:hover:p-4 transition-all duration-100 ease-out">
             <div className="flex items-center justify-center cursor-pointer gap-2 lg:justify-normal w-full">
-              <img
+              <NoContextMenuImage
+                onContextMenu={(e) => e.preventDefault()}
                 className="w-7 h-7 rounded-full object-cover"
                 src="https://cdn.flipit.money/img/flips/zwEI9FB1xgPmEOHw024FoLglDcQRMuMQm6vUu3TN.jpg"
                 alt=""
