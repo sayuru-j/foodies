@@ -4,6 +4,7 @@ import {
   BellIcon,
   SearchIcon,
 } from "@heroicons/react/solid";
+import NoContextMenuImage from "../../helpers/NoContextMenuImage";
 
 function Bottombar() {
   return (
@@ -22,7 +23,7 @@ function Bottombar() {
       </div>
 
       <div className="flex gap-2 lg:justify-normal justify-center items-center hover:bg-slate-200 rounded-md p-2">
-        <img
+        <NoContextMenuImage
           className="w-7 h-7 object-cover rounded-full"
           src="https://cdn.flipit.money/img/flips/zwEI9FB1xgPmEOHw024FoLglDcQRMuMQm6vUu3TN.jpg"
           alt=""
