@@ -2,8 +2,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { PhotographIcon } from "@heroicons/react/outline";
-
 function AddPost() {
   const navigate = useNavigate();
 
@@ -17,6 +15,8 @@ function AddPost() {
   });
 
   const [image, setImage] = useState("");
+  const [url, setUrl] = useState("");
+  const [isClickedPost, setIsClickedPost] = useState(false);
 
   const handleChange = (input) => (e) => {
     setState({ ...state, [input]: e.target.value });
@@ -35,6 +35,7 @@ function AddPost() {
       data
     );
     const responseData = await response.data;
+    setUrl(responseData.url);
     return responseData.url;
   };
 
@@ -55,6 +56,7 @@ function AddPost() {
   // console.log(image);
 
   const uploadAndSave = async () => {
+    setIsClickedPost(true);
     const imageUrl = await uploadImage();
     createPost(imageUrl);
 
@@ -140,7 +142,7 @@ function AddPost() {
               type="button"
               onClick={uploadAndSave}
             >
-              Post
+              {isClickedPost ? "Posting" : "Post"}
             </button>
           )}
         </div>
