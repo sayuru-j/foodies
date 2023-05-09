@@ -9,6 +9,7 @@ import {
 } from "@heroicons/react/outline";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import NoContextMenuImage from "../../helpers/NoContextMenuImage";
 
 function Post() {
   const [posts, setPosts] = useState([]);
@@ -44,7 +45,7 @@ function Post() {
         >
           <div className="flex items-center justify-between px-4">
             <div className="flex items-center justify-center gap-2">
-              <img
+              <NoContextMenuImage
                 className="w-8 h-8 rounded-full object-cover"
                 src={post.avatar}
                 alt="avatar"
@@ -82,7 +83,7 @@ function Post() {
             )}
           </div>
           <div className="py-2 px-2">
-            <img
+            <NoContextMenuImage
               className="w-full rounded-xl object-cover"
               src={post.photo}
               alt="Not Found 404"
