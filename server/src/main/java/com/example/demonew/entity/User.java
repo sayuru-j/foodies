@@ -8,10 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity                               //use entity when using tables entities
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data                        //for get getters and setters
+@Data
 
 public class User {
 
