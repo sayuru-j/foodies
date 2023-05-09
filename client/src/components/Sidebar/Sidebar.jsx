@@ -14,6 +14,8 @@ import NoContextMenuImage from "../../helpers/NoContextMenuImage";
 
 function Sidebar() {
   const [toggle, setToggle] = useState(false);
+  const [searchToggle, setSearchToggle] = useState(false);
+
   return (
     <div className="fixed left-0 z-50 md:flex hidden bg-white flex-col px-2 py-2 justify-between h-screen lg:w-64 md:w-16 border-r-[1px] border-slate-950/5 transition-all duration-500 ease-out ">
       <div className="flex flex-col justify-center gap-14">
