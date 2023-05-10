@@ -21,8 +21,8 @@ function Home() {
     <>
       {accessToken ? (
         <>
-          <Sidebar {...loginDetails.user} />
-          <Bottombar {...loginDetails.user} />
+          <Sidebar />
+          <Bottombar />
           <Timeline />
         </>
       ) : (
