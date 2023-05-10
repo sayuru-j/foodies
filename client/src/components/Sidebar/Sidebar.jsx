@@ -15,7 +15,7 @@ import Search from "../../helpers/Search";
 import { GoogleLogout } from "react-google-login";
 import { useNavigate } from "react-router-dom";
 
-function Sidebar() {
+function Sidebar({ avatar }) {
   const [toggle, setToggle] = useState(false);
   const [searchToggle, setSearchToggle] = useState(false);
 
@@ -74,7 +74,7 @@ function Sidebar() {
                 <NoContextMenuImage
                   onContextMenu={(e) => e.preventDefault()}
                   className="w-7 h-7 rounded-full object-cover"
-                  src="https://cdn.flipit.money/img/flips/zwEI9FB1xgPmEOHw024FoLglDcQRMuMQm6vUu3TN.jpg"
+                  src={avatar}
                   alt=""
                 />
                 <h1 className="font-medium lg:block hidden">Profile</h1>

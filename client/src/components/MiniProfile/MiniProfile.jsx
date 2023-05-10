@@ -44,7 +44,7 @@ function MiniProfile() {
           />
           <div className="flex flex-col justify-center">
             <h1 className="font-semibold text-sm">
-              {loginDetails?.user?.username}
+              {loginDetails?.user?.username.toLowerCase().replace(/\s/g, "")}
             </h1>
             <p className="text-sm">{loginDetails?.user?.fullname}</p>
           </div>

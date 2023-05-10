@@ -16,8 +16,6 @@ public class PostDTO {
     private String photo;
 
     private int userid;
-    private String username;
-    private String avatar;
 
     private int[] likes;
 

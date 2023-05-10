@@ -1,9 +1,7 @@
 package com.example.demonew.service;
 
 import com.example.demonew.dto.PostDTO;
-import com.example.demonew.dto.UserDTO;
 import com.example.demonew.entity.Post;
-import com.example.demonew.entity.User;
 import com.example.demonew.repo.PostRepo;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -12,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -34,6 +33,20 @@ public class PostService {
 
         return postDTO;
     }
+
+    public PostDTO updatePost(int postId, PostDTO postDTO) {
+        Optional<Post> optionalPost = postRepo.findById(postId);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
+            post.setCaption(postDTO.getCaption());
+            post.setPhoto(postDTO.getPhoto());
+            // set any other fields you want to update
+            postRepo.save(post);
+            return postDTO;
+        }
+        return null;
+    }
+
 
     public boolean deletePost(int postid) {
         postRepo.deleteByPostid(postid);

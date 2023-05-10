@@ -10,9 +10,10 @@ function Login() {
 
   const onSuccess = (res) => {
     // Getting Login Details to a variable
-    let loginDetails = {
+    const loginDetails = {
       accessToken: res.accessToken,
       user: {
+        userid: null,
         fullname: res.profileObj.name,
         email: res.profileObj.email,
         username: res.profileObj?.name?.toLowerCase(),
@@ -20,29 +21,50 @@ function Login() {
       },
     };
 
-    // console.log(loginDetails);
+    // Assigning a default dp if user does not have a display picture.
+    if (loginDetails.user.avatar === undefined) {
+      const urls = [
+        "https://msuwdjwjwvcacj5ycwdcfb7pqre3ggztxfdjomcsudordomdhwpa.arweave.net/ZKlhpsm1RAEnuBWGIofvhEmzGzO5RpcwUqDdEbmDPZ4?ext=jpg",
+      ];
 
-    // Saving user in API
+      const randomIndex = Math.floor(Math.random() * urls.length);
+      const randomUrl = urls[randomIndex];
+
+      loginDetails.user.avatar = randomUrl;
+    }
+
     const saveUserInApi = async () => {
-      const response = axios.post(
+      const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/user/saveUser`,
         {
-          username: res?.profileObj?.name?.toLowerCase(),
+          username: loginDetails.user.username.toLowerCase().replace(/\s/g, ""),
           city: "Unknown",
-          avatar: res?.profileObj?.imageUrl,
+          avatar: loginDetails.user.avatar,
         }
       );
-
-      // Checks whether user is already logged
-      // if (!localStorage.getItem("loginDetails")) {
-      //   saveUserInApi();
-      // }
     };
 
-    // Saves User Details in LocalStorage
-    localStorage.setItem("loginDetails", JSON.stringify(loginDetails));
+    // Saving user in API
     saveUserInApi();
 
+    const fetchUserId = async () => {
+      const response = await axios.get(
+        `${
+          import.meta.env.VITE_API_URL
+        }/user/getUserByUsername/${loginDetails.user.username
+          .toLowerCase()
+          .replace(/\s/g, "")}`
+      );
+
+      let userid = response.data.userid;
+
+      loginDetails.user.userid = userid;
+      // Saves User Details in LocalStorage
+      localStorage.setItem("loginDetails", JSON.stringify(loginDetails));
+    };
+
+    // Fetch existing user
+    fetchUserId();
     navigate("/");
   };
 

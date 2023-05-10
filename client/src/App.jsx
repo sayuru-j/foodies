@@ -1,11 +1,8 @@
 import { useEffect } from "react";
 import Navigation from "./pages/Routes/Routes";
 import { gapi } from "gapi-script";
-import { useNavigate } from "react-router-dom";
 
 function App() {
-  const navigate = useNavigate();
-
   useEffect(() => {
     function start() {
       gapi.client.init({

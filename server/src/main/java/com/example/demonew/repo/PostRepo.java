@@ -9,4 +9,5 @@ public interface PostRepo extends JpaRepository<Post, Integer> {
     @Modifying
     @Query("delete from Post p where p.postid = ?1")
     void deleteByPostid(int postid);
+
 }

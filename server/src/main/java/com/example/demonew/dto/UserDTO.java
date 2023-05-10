@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserDTO {
 
-    private int userid;
+    private long userid;
     private String city;
     private String username;
     private String avatar;

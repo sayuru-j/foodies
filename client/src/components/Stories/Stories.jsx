@@ -42,7 +42,9 @@ function Stories() {
                 alt=""
               />
             </div>
-            <p className="text-sm font-medium truncate">{story.username}</p>
+            <p className="text-sm font-medium w-14 text-center truncate">
+              {story.username}
+            </p>
           </div>
         </div>
       ))}

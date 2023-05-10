@@ -1,7 +1,6 @@
 package com.example.demonew.controller;
 
 import com.example.demonew.dto.PostDTO;
-import com.example.demonew.dto.UserDTO;
 import com.example.demonew.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +23,13 @@ public class PostController {
     @PostMapping("/savePost")
     public PostDTO savePost(@RequestBody PostDTO postDTO){
         return postService.savePost(postDTO);
+
+
+    }
+
+    @PutMapping("/userUpdate/{postid}")
+    public PostDTO updatePost(@PathVariable int postid, @RequestBody PostDTO postDTO){
+        return postService.updatePost(postid, postDTO);
 
 
     }

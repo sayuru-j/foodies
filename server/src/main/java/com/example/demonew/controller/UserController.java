@@ -1,5 +1,6 @@
 package com.example.demonew.controller;
 import com.example.demonew.dto.UserDTO;
+import com.example.demonew.entity.User;
 import com.example.demonew.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,16 @@ public class UserController {
         return userService.getAllUsers();
 
     }
+
+    @GetMapping("/getUserByUsername/{username}")
+    public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
+        User user = userService.findByUsername(username);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(userService.convertToDTO(user), HttpStatus.OK);
+    }
+
 
 
 

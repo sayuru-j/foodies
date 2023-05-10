@@ -27,6 +27,11 @@ public class UserService {
         return user != null;
     }
 
+    public User findByUsername(String username) {
+        return userRepo.findByUsername(username);
+    }
+
+
     public UserDTO saveUser(UserDTO userDTO) {
         if (userExistsByUsername(userDTO.getUsername())) { //Checks if user exists
             throw new IllegalArgumentException("Username already exists");
@@ -42,6 +47,15 @@ public class UserService {
         List<User>userList=userRepo.findAll();   //data get from User class/table,userList> reffrence, findAll() >find all data
         return modelMapper.map(userList,new TypeToken<List<UserDTO>>(){}.getType());
     }
+
+    public UserDTO convertToDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserid(user.getUserid());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setCity(user.getCity());
+        userDTO.setAvatar(user.getAvatar());
+        return userDTO;
+        }
 
                                              //UPDATE
     public UserDTO updateUser(UserDTO userDTO){

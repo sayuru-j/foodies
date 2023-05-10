@@ -22,10 +22,8 @@ public class Post {
     private String photo;
 
     private int userid;
-    private String username;
-    private String avatar;
 
-    private int[] likes;
+    private int[] likes = new int[0];
 
     @CreationTimestamp
     private LocalDateTime created;

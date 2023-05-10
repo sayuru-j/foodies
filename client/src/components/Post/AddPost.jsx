@@ -51,9 +51,7 @@ function AddPost() {
       {
         caption,
         photo: imageUrl,
-        userid,
-        username: loginDetails?.user?.username,
-        avatar: loginDetails?.user?.avatar,
+        userid: loginDetails?.user?.userid,
         likes: [],
       }
     );
