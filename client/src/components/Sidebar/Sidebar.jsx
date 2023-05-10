@@ -11,13 +11,20 @@ import logo from "../../assets/foodies-logo-text.png";
 import logoText from "../../assets/foodies-logo.png";
 import { useState } from "react";
 import NoContextMenuImage from "../../helpers/NoContextMenuImage";
-import Search from "../../helpers/Search";
 import { GoogleLogout } from "react-google-login";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-function Sidebar({ avatar }) {
+function Sidebar() {
   const [toggle, setToggle] = useState(false);
-  const [searchToggle, setSearchToggle] = useState(false);
+  const [loginDetails, setLoginDetails] = useState([]);
+
+  useEffect(() => {
+    let loginDetails = localStorage.getItem("loginDetails");
+    const accessToken = JSON.parse(loginDetails)?.accessToken;
+
+    setLoginDetails(JSON.parse(loginDetails));
+  }, []);
 
   const navigate = useNavigate();
 
@@ -28,38 +35,42 @@ function Sidebar({ avatar }) {
 
   return (
     <>
-      <Search className={`${!searchToggle && "hidden"}`} />
       <div className="fixed left-0 z-40 md:flex hidden bg-white flex-col px-2 py-2 justify-between h-screen lg:w-64 md:w-16 border-r-[1px] border-slate-950/5 transition-all duration-500 ease-out ">
         <div className="flex flex-col justify-center gap-14">
-          <div className="p-2 lg:block hidden" id="top">
-            <NoContextMenuImage className="w-44" src={logo} alt="" />
-          </div>
-          <div className="p-2 md:block lg:hidden hidden" id="top">
-            <NoContextMenuImage className="w-full" src={logoText} alt="" />
-          </div>
+          <a href="/">
+            <div className="p-2 lg:block hidden" id="top">
+              <NoContextMenuImage className="w-44" src={logo} alt="" />
+            </div>
+            <div className="p-2 md:block lg:hidden hidden" id="top">
+              <NoContextMenuImage className="w-full" src={logoText} alt="" />
+            </div>
+          </a>
 
           <div id="mid" className="flex flex-col gap-3 h-[88vh]">
-            <div className="flex justify-center items-center hover:bg-accent/30 rounded-md p-2 lg:hover:p-4 transition-all duration-100 ease-out">
-              <div className="flex items-center justify-center cursor-pointer gap-2 lg:justify-normal w-full">
-                <HomeIcon className="w-6" />
-                <h1 className="font-medium lg:block hidden">Home</h1>
+            <a href="/">
+              <div className="flex justify-center items-center hover:bg-accent/30 rounded-md p-2 lg:hover:p-4 transition-all duration-100 ease-out">
+                <div className="flex items-center justify-center cursor-pointer gap-2 lg:justify-normal w-full">
+                  <HomeIcon className="w-6" />
+                  <h1 className="font-medium lg:block hidden">Home</h1>
+                </div>
               </div>
-            </div>
-            <div
-              onClick={() => setSearchToggle(!searchToggle)}
-              className="flex justify-center items-center hover:bg-accent/30 rounded-md p-2 lg:hover:p-4 transition-all duration-100 ease-out"
-            >
-              <div className="flex items-center justify-center cursor-pointer gap-2 lg:justify-normal w-full">
-                <SearchIcon className="w-6" />
-                <h1 className="font-medium lg:block hidden">Search</h1>
+            </a>
+            <a href="/search">
+              <div className="flex justify-center items-center hover:bg-accent/30 rounded-md p-2 lg:hover:p-4 transition-all duration-100 ease-out">
+                <div className="flex items-center justify-center cursor-pointer gap-2 lg:justify-normal w-full">
+                  <SearchIcon className="w-6" />
+                  <h1 className="font-medium lg:block hidden">Search</h1>
+                </div>
               </div>
-            </div>
-            <div className="flex justify-center items-center hover:bg-accent/30 rounded-md p-2 lg:hover:p-4 transition-all duration-100 ease-out">
-              <div className="flex items-center justify-center cursor-pointer gap-2 lg:justify-normal w-full">
-                <BellIcon className="w-6" />
-                <h1 className="font-medium lg:block hidden">Notification</h1>
+            </a>
+            <a href="/notification">
+              <div className="flex justify-center items-center hover:bg-accent/30 rounded-md p-2 lg:hover:p-4 transition-all duration-100 ease-out">
+                <div className="flex items-center justify-center cursor-pointer gap-2 lg:justify-normal w-full">
+                  <BellIcon className="w-6" />
+                  <h1 className="font-medium lg:block hidden">Notification</h1>
+                </div>
               </div>
-            </div>
+            </a>
             <a href="/addpost">
               <div className="flex justify-center items-center hover:bg-accent/30 rounded-md p-2 lg:hover:p-4 transition-all duration-100 ease-out">
                 <div className="flex items-center justify-center cursor-pointer gap-2 lg:justify-normal w-full">
@@ -69,17 +80,19 @@ function Sidebar({ avatar }) {
               </div>
             </a>
 
-            <div className="flex justify-center items-center hover:bg-accent/30 rounded-md p-2 lg:hover:p-4 transition-all duration-100 ease-out">
-              <div className="flex items-center justify-center cursor-pointer gap-2 lg:justify-normal w-full">
-                <NoContextMenuImage
-                  onContextMenu={(e) => e.preventDefault()}
-                  className="w-7 h-7 rounded-full object-cover"
-                  src={avatar}
-                  alt=""
-                />
-                <h1 className="font-medium lg:block hidden">Profile</h1>
+            <a href="/profile/my">
+              <div className="flex justify-center items-center hover:bg-accent/30 rounded-md p-2 lg:hover:p-4 transition-all duration-100 ease-out">
+                <div className="flex items-center justify-center cursor-pointer gap-2 lg:justify-normal w-full">
+                  <NoContextMenuImage
+                    onContextMenu={(e) => e.preventDefault()}
+                    className="w-7 h-7 rounded-full object-cover"
+                    src={loginDetails?.user?.avatar}
+                    alt=""
+                  />
+                  <h1 className="font-medium lg:block hidden">Profile</h1>
+                </div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
         <div
