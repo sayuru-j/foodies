@@ -38,14 +38,42 @@ public class PostService {
         Optional<Post> optionalPost = postRepo.findById(postId);
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
-            post.setCaption(postDTO.getCaption());
-            post.setPhoto(postDTO.getPhoto());
-            // set any other fields you want to update
+            post.setCaption(postDTO.getCaption()); // Updates caption
             postRepo.save(post);
             return postDTO;
         }
         return null;
     }
+
+    public boolean addLike(int postId, int userId) {
+        Optional<Post> optionalPost = postRepo.findById(postId);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
+            List<Integer> likes = post.getLikes();
+            if (!likes.contains(userId)) {
+                likes.add(userId);
+                post.setLikes(likes);
+                postRepo.save(post);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean removeLike(int postId, int userId) {
+        Optional<Post> optionalPost = postRepo.findById(postId);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
+            List<Integer> likes = post.getLikes();
+            if (likes.contains(userId)) {
+                likes.remove(Integer.valueOf(userId));
+                post.setLikes(likes);
+                postRepo.save(post);
+                return true;
+            }
+        }
+        return false;
+}
 
 
     public boolean deletePost(int postid) {

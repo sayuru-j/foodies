@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -23,7 +25,8 @@ public class Post {
 
     private int userid;
 
-    private int[] likes = new int[0];
+    @ElementCollection
+    private List<Integer> likes = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime created;

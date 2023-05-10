@@ -4,9 +4,11 @@ import logo from "../../assets/foodies-logo-text.png";
 import { GoogleLogin } from "react-google-login";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useState } from "react";
 
 function Login() {
   const navigate = useNavigate();
+  const [isSavedInAPI, setIsSavedInAPI] = useState();
 
   const onSuccess = (res) => {
     // Getting Login Details to a variable
@@ -42,10 +44,13 @@ function Login() {
           avatar: loginDetails.user.avatar,
         }
       );
+
+      setIsSavedInAPI(response?.data);
     };
 
     // Saving user in API
     saveUserInApi();
+    console.log(isSavedInAPI);
 
     const fetchUserId = async () => {
       const response = await axios.get(
@@ -61,11 +66,11 @@ function Login() {
       loginDetails.user.userid = userid;
       // Saves User Details in LocalStorage
       localStorage.setItem("loginDetails", JSON.stringify(loginDetails));
+      navigate("/");
     };
 
     // Fetch existing user
     fetchUserId();
-    navigate("/");
   };
 
   const onFailure = (res) => {

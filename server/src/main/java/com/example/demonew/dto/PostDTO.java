@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -17,7 +18,7 @@ public class PostDTO {
 
     private int userid;
 
-    private int[] likes;
+    private List<Integer> likes;
 
     private LocalDateTime created;
     private LocalDateTime updated;

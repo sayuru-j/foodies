@@ -27,12 +27,23 @@ public class PostController {
 
     }
 
-    @PutMapping("/userUpdate/{postid}")
+    @PutMapping("/updatePost/{postid}")
     public PostDTO updatePost(@PathVariable int postid, @RequestBody PostDTO postDTO){
         return postService.updatePost(postid, postDTO);
 
 
     }
+
+    @PostMapping("/likePost")
+    public boolean likePost(@RequestParam int postId, @RequestParam int userId) {
+        return postService.addLike(postId, userId);
+    }
+
+    @PostMapping("/unlikePost")
+    public boolean unlikePost(@RequestParam int postId, @RequestParam int userId) {
+        return postService.removeLike(postId, userId);
+    }
+
 
     //Delete by PostId
     @DeleteMapping("/deletePost/{postid}")

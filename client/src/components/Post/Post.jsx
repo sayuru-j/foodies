@@ -44,8 +44,6 @@ function Post() {
     getUsers();
   }, []);
 
-  console.log(posts);
-
   return (
     <div className="flex flex-col gap-10">
       {posts.map((post) => (
