@@ -188,7 +188,9 @@ function PostItem({
               <span className="pl-1">Likes</span>
             </p>
             <p className="text-sm">{caption}</p>
-            <p className="text-sm">Comments</p>
+            <p className="text-sm text-blue-500/80 italic font-medium">
+              see comments
+            </p>
           </div>
 
           <div
