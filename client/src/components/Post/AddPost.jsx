@@ -131,7 +131,7 @@ function AddPost() {
                   Caption
                 </label>
                 <input
-                  className="bg-slate-100 font-medium shadow-sm rounded-full w-full py-3 text-sm px-24 mx-10 outline-none"
+                  className="bg-slate-100 font-medium h-30 shadow-sm rounded-full w-full py-3 text-sm px-24 mx-10 outline-none"
                   value={caption}
                   onChange={handleChange("caption")}
                   type="text"
