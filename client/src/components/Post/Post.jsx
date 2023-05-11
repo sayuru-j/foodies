@@ -44,6 +44,10 @@ function Post() {
     getUsers();
   }, []);
 
+  const sortedPosts = posts.sort(
+    (a, b) => new Date(b.created) - new Date(a.created)
+  );
+
   return (
     <div className="flex flex-col gap-10">
       {posts.map((post) => (
