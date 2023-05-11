@@ -7,16 +7,32 @@ import NoContextMenuImage from "../../helpers/NoContextMenuImage";
 
 import { CameraIcon } from "@heroicons/react/solid";
 import { CogIcon, PhotographIcon } from "@heroicons/react/outline";
+import axios from "axios";
 
 function Profile() {
-  const [loginDetails, setLoginDetails] = useState([]);
+  const [loginDetails, setLoginDetails] = useState({});
+  const [userDetails, setUserDetails] = useState({});
+
+  const getUsers = async ({ user }) => {
+    let username = user.username.toLowerCase().replace(/\s/g, "");
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/user/getUserByUsername/${username}`
+      // `${import.meta.env.VITE_API_URL}/user/getUsers`
+    );
+
+    setUserDetails(response.data);
+  };
 
   useEffect(() => {
-    let loginDetails = localStorage.getItem("loginDetails");
+    let loginDetails = localStorage.getItem("loginDetails"); //Accessing LocalStorage
     const accessToken = JSON.parse(loginDetails)?.accessToken;
 
-    setLoginDetails(JSON.parse(loginDetails));
+    let userdata = JSON.parse(loginDetails);
+
+    setLoginDetails(userdata);
+    getUsers(userdata);
   }, []);
+
   return (
     <>
       <Sidebar />
@@ -50,10 +66,20 @@ function Profile() {
                   <span className="font-medium">0</span> Posts
                 </h1>
                 <h1 className="text-sm">
-                  <span className="font-medium">0</span> Followers
+                  <span className="font-medium">
+                    {userDetails?.followers === null
+                      ? "0"
+                      : userDetails?.followers?.length}
+                  </span>{" "}
+                  Followers
                 </h1>
                 <h1 className="text-sm">
-                  <span className="font-medium">0</span> Following
+                  <span className="font-medium">
+                    {userDetails?.following === null
+                      ? "0"
+                      : userDetails?.following?.length}
+                  </span>{" "}
+                  Following
                 </h1>
               </div>
               <div className="flex flex-col">
