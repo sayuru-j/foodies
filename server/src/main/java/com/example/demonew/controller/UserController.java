@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController         //for control response body as json format
-@RequestMapping(value ="api/v1/user")       //map  all http request to class(get access all http methods for use), declare basement path http://localhost:8081/api/v1/user
+@RestController
+@RequestMapping(value ="api/v1/user")
 @CrossOrigin
 public class UserController {
 
@@ -60,5 +60,17 @@ public class UserController {
 
 
     }
+
+    @PostMapping("/followUser")
+    public boolean followUser(@RequestParam int uuid, @RequestParam int userId) {
+        return userService.followUser(uuid, userId);
+    }
+
+    @PostMapping("/unfollowUser")
+    public boolean unfollowUser(@RequestParam int uuid, @RequestParam int userId) {
+        return userService.removeFollow(uuid, userId);
+    }
+
+
 }
 
