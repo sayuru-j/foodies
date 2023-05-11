@@ -1,12 +1,12 @@
 package com.example.demonew.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -17,10 +17,14 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long userid;
+    private int userid;
     private String city;
     private String username;
     private String avatar;
 
+    @ElementCollection
+    private List<Integer> following = new ArrayList<>();
+    @ElementCollection
+    private List<Integer> followers = new ArrayList<>();
 
 }
