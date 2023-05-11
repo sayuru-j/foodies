@@ -13,8 +13,8 @@ public class DemonewApplication {
 
 	}
     @Bean
-	public ModelMapper modelMapper(){       //inject model mapper dependency as class
-		return new ModelMapper();         //    return that
+	public ModelMapper modelMapper(){
+		return new ModelMapper();
 
 	}
 }
