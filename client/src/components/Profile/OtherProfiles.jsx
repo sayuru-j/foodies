@@ -6,9 +6,10 @@ import { useEffect } from "react";
 import NoContextMenuImage from "../../helpers/NoContextMenuImage";
 
 import { CameraIcon } from "@heroicons/react/solid";
-import { CogIcon, PhotographIcon } from "@heroicons/react/outline";
+import { CogIcon, PhotographIcon, PlusIcon } from "@heroicons/react/outline";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import PostItemProfile from "../Profile/PostItemProfile";
 
 function OtherProfiles() {
   const [loginDetails, setLoginDetails] = useState({});
@@ -22,8 +23,11 @@ function OtherProfiles() {
     following: [],
   });
   const [followStatus, setFollowStatus] = useState(false);
+  const [userPosts, setUserPosts] = useState([]);
   const urlParams = useParams({});
   const navigate = useNavigate();
+  const [postIsOpened, setPostIsOpened] = useState(false);
+  const [postId, setPostId] = useState(0);
 
   const getUsers = async ({ userid }) => {
     let username = urlParams.username;
@@ -41,6 +45,19 @@ function OtherProfiles() {
     }
   };
 
+  const getPosts = async () => {
+    let userid = parseInt(urlParams.id);
+    const responsePosts = await axios.get(
+      `${import.meta.env.VITE_API_URL}/post/getPosts`
+    );
+
+    const filterPosts = responsePosts?.data?.filter(
+      (post) => post.userid === userid
+    );
+
+    setUserPosts(filterPosts);
+  };
+
   useEffect(() => {
     let loginDetails = localStorage.getItem("loginDetails"); //Accessing LocalStorage
     const accessToken = JSON.parse(loginDetails)?.accessToken;
@@ -50,6 +67,7 @@ function OtherProfiles() {
     setLoginDetails(userdata);
 
     getUsers(userdata.user); // Passing current userdata as props
+    getPosts();
   }, []);
 
   const handleFollow = async () => {
@@ -123,7 +141,7 @@ function OtherProfiles() {
               </div>
               <div className="flex gap-8 items-center">
                 <h1 className="text-sm">
-                  <span className="font-medium">0</span> Posts
+                  <span className="font-medium">{userPosts?.length}</span> Posts
                 </h1>
                 <h1 className="text-sm">
                   <span className="font-medium">
@@ -150,12 +168,65 @@ function OtherProfiles() {
           </div>
         </div>
 
-        <div className="w-full flex flex-col items-center justify-center gap-2 pt-40">
-          <PhotographIcon className="w-20 opacity-70" />
-          <h1 className="text-[20px] font-bold">
-            Photos of {userDetails?.fullname}
-          </h1>
-        </div>
+        {!userPosts && (
+          <div className="w-full flex flex-col items-center justify-center gap-2 pt-40">
+            <PhotographIcon className="w-20 opacity-70" />
+            <h1 className="text-[20px] font-bold">
+              Photos of {userDetails?.fullname}
+            </h1>
+          </div>
+        )}
+        {userPosts && (
+          <div className="flex justify-center p-2">
+            <div className="flex flex-wrap w-full md:justify-start justify-center md:max-w-3xl gap-3">
+              {userPosts.map((post) => (
+                <div
+                  onClick={() => {
+                    setPostIsOpened(!postIsOpened);
+                    setPostId(post.postid);
+                  }}
+                  key={post.postid}
+                >
+                  <NoContextMenuImage
+                    className="w-32 h-32 object-cover rounded-xl shadow-sm hover:opacity-80 hover:cursor-pointer"
+                    src={post.photo}
+                    alt={post.postid}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {postIsOpened && (
+              <>
+                <div className="h-screen bg-black fixed left-0 top-0 opacity-80 z-40 w-full flex">
+                  <PlusIcon
+                    onClick={() => setPostIsOpened(!postIsOpened)}
+                    className="w-8 text-white fixed right-2 top-2 rotate-45 cursor-pointer"
+                  />
+                </div>
+                <div className="grid grid-cols-2 fixed z-50 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white shadow-sm w-full max-w-[100vh] rounded-sm">
+                  <div className="relative">
+                    <NoContextMenuImage
+                      className="rounded-sm object-contain h-full"
+                      src={
+                        userPosts.find((post) => post.postid === postId).photo
+                      }
+                      alt=""
+                    />
+                  </div>
+                  <div>
+                    <PostItemProfile
+                      uuid={loginDetails.user.userid}
+                      avatar={loginDetails.user.avatar}
+                      username={loginDetails.user.username}
+                      {...userPosts.find((post) => post.postid === postId)}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </>
   );
