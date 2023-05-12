@@ -16,6 +16,8 @@ public class UserDTO {
     private long userid;
     private String city;
     private String username;
+    private String email;
+    private String fullname;
     private String avatar;
 
     private List<Integer> following;
