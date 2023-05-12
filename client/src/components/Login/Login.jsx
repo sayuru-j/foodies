@@ -40,6 +40,8 @@ function Login() {
         `${import.meta.env.VITE_API_URL}/user/saveUser`,
         {
           username: loginDetails.user.username.toLowerCase().replace(/\s/g, ""),
+          email: loginDetails.user.email,
+          fullname: loginDetails.user.fullname,
           city: "Unknown",
           avatar: loginDetails.user.avatar,
         }
