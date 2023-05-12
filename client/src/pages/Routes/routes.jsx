@@ -9,6 +9,7 @@ import Search from "../../components/Search/Search";
 import { useState } from "react";
 import { useEffect } from "react";
 import LoginToProceed from "../../components/LoginToProceed/LoginToProceed";
+import OtherProfiles from "../../components/Profile/OtherProfiles";
 
 function Navigation() {
   const [accessToken, setAccessToken] = useState(null);
@@ -42,6 +43,10 @@ function Navigation() {
       <Route
         path="/settings"
         Component={accessToken ? Settings : LoginToProceed}
+      />
+      <Route
+        path="/profile/:username"
+        Component={accessToken ? OtherProfiles : Login}
       />
     </Routes>
   );
