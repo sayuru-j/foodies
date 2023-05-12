@@ -26,6 +26,8 @@ public class UserService {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserid(user.getUserid());
         userDTO.setUsername(user.getUsername());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setFullname(user.getFullname());
         userDTO.setCity(user.getCity());
         userDTO.setAvatar(user.getAvatar());
         userDTO.setFollowing(user.getFollowing());
