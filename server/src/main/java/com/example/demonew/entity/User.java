@@ -20,6 +20,8 @@ public class User {
     private int userid;
     private String city;
     private String username;
+    private String email;
+    private String fullname;
     private String avatar;
 
     @ElementCollection
