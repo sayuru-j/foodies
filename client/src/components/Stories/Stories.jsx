@@ -57,7 +57,7 @@ function Stories() {
           key={story.userid}
         >
           <div className="flex flex-col items-center justify-center">
-            <a href={`/profile/${story.username}`}>
+            <a href={`/profile/${story.userid}/${story.username}`}>
               <div className="bg-gradient-to-r from-orange-500 via-primary/50 to-secondary rounded-full p-[2px]">
                 <NoContextMenuImage
                   onContextMenu={(e) => e.preventDefault()}
