@@ -109,7 +109,7 @@ function MiniProfile() {
           >
             <div className="flex items-center justify-center gap-2">
               <a
-                href={`/profile/${user.username}`}
+                href={`/profile/${user.userid}/${user.username}`}
                 className="flex items-center justify-center gap-2"
               >
                 <NoContextMenuImage
