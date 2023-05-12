@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 function MiniProfile() {
   const [users, setUsers] = useState([]);
-
-  const [loginDetails, setLoginDetails] = useState("");
+  const [loginDetails, setLoginDetails] = useState({});
+  const [followStatus, setFollowStatus] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,30 +22,67 @@ function MiniProfile() {
     let loginDetails = JSON.parse(localStorage.getItem("loginDetails"));
 
     setLoginDetails(loginDetails);
-  }, []);
 
-  const getUsers = async () => {
-    const response = await axios("http://localhost:8080/api/v1/user/getUsers");
-    setUsers(response?.data);
+    const getUsers = async () => {
+      const response = await axios(
+        "http://localhost:8080/api/v1/user/getUsers"
+      );
+
+      // Removing the current user from suggestions
+      const CurrentUserIndex = response.data.findIndex(
+        (user) => user.userid === loginDetails?.user?.userid
+      );
+
+      if (CurrentUserIndex >= 0) {
+        const removedData = response.data[CurrentUserIndex];
+        const filteredData = response.data.filter(
+          (user) => user.userid !== removedData.userid
+        );
+
+        // Removing already followed users from suggsestions
+        const nonFollowedUsers = filteredData.filter(
+          (user) => !user.followers.includes(loginDetails?.user?.userid)
+        );
+        setUsers(nonFollowedUsers);
+      }
+    };
+
+    getUsers();
+  }, [followStatus]);
+
+  const handleFollow = async (userid) => {
+    const followResponse = await axios.post(`
+    ${import.meta.env.VITE_API_URL}/user/followUser?uuid=${
+      loginDetails?.user?.userid
+    }&userId=${userid}
+    `);
+
+    setFollowStatus(followResponse?.data && true);
+
+    // console.log(followResponse);
   };
 
-  useEffect(() => {
-    getUsers();
-  }, []);
+  // console.log(users);
 
   return (
     <div className="max-w-sm h-[600px] w-full flex flex-col gap-2">
       <div className="flex items-center justify-between px-2 py-5 border-b-[1px] shadow-sm rounded-lg">
         <div className="flex items-center gap-2">
-          <NoContextMenuImage
-            className="w-12 h-12 rounded-full object-cover border-[2px] p-[2px]"
-            src={loginDetails?.user?.avatar}
-            alt=""
-          />
+          <a href="/profile/my">
+            <NoContextMenuImage
+              className="w-12 h-12 rounded-full object-cover border-[2px] p-[2px]"
+              src={loginDetails?.user?.avatar}
+              alt=""
+            />
+          </a>
+
           <div className="flex flex-col justify-center">
-            <h1 className="font-semibold text-sm">
-              {loginDetails?.user?.username.toLowerCase().replace(/\s/g, "")}
-            </h1>
+            <a href="/profile/my">
+              <h1 className="font-semibold text-sm">
+                {loginDetails?.user?.username.toLowerCase().replace(/\s/g, "")}
+              </h1>
+            </a>
+
             <p className="text-sm">{loginDetails?.user?.fullname}</p>
           </div>
         </div>
@@ -71,17 +108,30 @@ function MiniProfile() {
             key={user.userid}
           >
             <div className="flex items-center justify-center gap-2">
-              <NoContextMenuImage
-                className="w-8 h-8 object-cover rounded-full"
-                src={user.avatar}
-                alt=""
-              />
-              <div className="flex flex-col justify-center">
-                <h1 className="text-sm font-medium">{user.username}</h1>
-                <p className="text-xs font-thin">{user.city}</p>
-              </div>
+              <a
+                href={`/profile/${user.username}`}
+                className="flex items-center justify-center gap-2"
+              >
+                <NoContextMenuImage
+                  className="w-8 h-8 object-cover rounded-full cursor-pointer"
+                  src={user.avatar}
+                  alt=""
+                />
+                <div className="flex flex-col justify-center">
+                  <h1 className="text-sm font-medium cursor-pointer">
+                    {user.username}
+                  </h1>
+                  <p className="text-xs font-thin cursor-pointer">
+                    {user.city}
+                  </p>
+                </div>
+              </a>
             </div>
-            <button className="font-medium text-xs" type="button">
+            <button
+              onClick={handleFollow.bind(null, parseInt(user.userid))}
+              className="font-medium text-xs"
+              type="button"
+            >
               Follow
             </button>
           </div>
