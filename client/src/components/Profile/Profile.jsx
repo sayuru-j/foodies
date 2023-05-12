@@ -11,7 +11,14 @@ import axios from "axios";
 
 function Profile() {
   const [loginDetails, setLoginDetails] = useState({});
-  const [userDetails, setUserDetails] = useState({});
+  const [userDetails, setUserDetails] = useState({
+    userid: "",
+    username: "",
+    fullname: "",
+    city: "",
+    followers: [],
+    following: [],
+  });
 
   const getUsers = async ({ user }) => {
     let username = user.username.toLowerCase().replace(/\s/g, "");
@@ -67,17 +74,13 @@ function Profile() {
                 </h1>
                 <h1 className="text-sm">
                   <span className="font-medium">
-                    {userDetails?.followers === null
-                      ? "0"
-                      : userDetails?.followers?.length}
+                    {userDetails?.followers?.length}
                   </span>{" "}
                   Followers
                 </h1>
                 <h1 className="text-sm">
                   <span className="font-medium">
-                    {userDetails?.following === null
-                      ? "0"
-                      : userDetails?.following?.length}
+                    {userDetails?.following?.length}
                   </span>{" "}
                   Following
                 </h1>
