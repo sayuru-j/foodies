@@ -107,6 +107,9 @@ function PostItem({
               <a
                 href={`/profile/${
                   users.find((user) => user.userid === userid) &&
+                  users.find((user) => user.userid === userid).userid
+                }/${
+                  users.find((user) => user.userid === userid) &&
                   users.find((user) => user.userid === userid).username
                 }`}
               >
