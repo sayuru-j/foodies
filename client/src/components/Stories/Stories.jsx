@@ -14,15 +14,38 @@ function Stories() {
   // }, []);
 
   // //   console.log(suggestions);
-
+  const [loginDetails, setLoginDetails] = useState({});
   const [users, setUsers] = useState([]);
 
-  const getUsers = async () => {
-    const response = await axios("http://localhost:8080/api/v1/user/getUsers");
-    setUsers(response?.data);
-  };
-
   useEffect(() => {
+    let loginDetails = JSON.parse(localStorage.getItem("loginDetails"));
+
+    setLoginDetails(loginDetails);
+
+    const getUsers = async () => {
+      const response = await axios(
+        "http://localhost:8080/api/v1/user/getUsers"
+      );
+
+      // Removing the current user from suggestions
+      const CurrentUserIndex = response.data.findIndex(
+        (user) => user.userid === loginDetails?.user?.userid
+      );
+
+      if (CurrentUserIndex >= 0) {
+        const removedData = response.data[CurrentUserIndex];
+        const filteredData = response.data.filter(
+          (user) => user.userid !== removedData.userid
+        );
+
+        // Removing already followed users from suggsestions
+        const FollowedUsers = filteredData.filter((user) =>
+          user.followers.includes(loginDetails?.user?.userid)
+        );
+        setUsers(FollowedUsers);
+      }
+    };
+
     getUsers();
   }, []);
 
@@ -34,14 +57,17 @@ function Stories() {
           key={story.userid}
         >
           <div className="flex flex-col items-center justify-center">
-            <div className="bg-gradient-to-r from-orange-500 via-primary/50 to-secondary rounded-full p-[2px]">
-              <NoContextMenuImage
-                onContextMenu={(e) => e.preventDefault()}
-                className="rounded-full w-12 h-12 object-cover border-2"
-                src={story.avatar}
-                alt=""
-              />
-            </div>
+            <a href={`/profile/${story.username}`}>
+              <div className="bg-gradient-to-r from-orange-500 via-primary/50 to-secondary rounded-full p-[2px]">
+                <NoContextMenuImage
+                  onContextMenu={(e) => e.preventDefault()}
+                  className="rounded-full w-12 h-12 object-cover border-2"
+                  src={story.avatar}
+                  alt=""
+                />
+              </div>
+            </a>
+
             <p className="text-sm font-medium w-14 text-center truncate">
               {story.username}
             </p>
