@@ -104,23 +104,39 @@ function PostItem({
         >
           <div className="flex items-center justify-between px-4">
             <div className="flex items-center justify-center gap-2">
-              <NoContextMenuImage
-                className="w-8 h-8 rounded-full object-cover"
-                src={
-                  // Finding avatar based on userid relevant to post
+              <a
+                href={`/profile/${
                   users.find((user) => user.userid === userid) &&
-                  users.find((user) => user.userid === userid).avatar
-                }
-                alt="avatar"
-              />
-              <div className="flex flex-col">
-                <h1 className="font-semibold text-sm">
-                  {
+                  users.find((user) => user.userid === userid).username
+                }`}
+              >
+                <NoContextMenuImage
+                  className="w-8 h-8 rounded-full object-cover"
+                  src={
                     // Finding avatar based on userid relevant to post
                     users.find((user) => user.userid === userid) &&
-                      users.find((user) => user.userid === userid).username
+                    users.find((user) => user.userid === userid).avatar
                   }
-                </h1>
+                  alt="avatar"
+                />
+              </a>
+
+              <div className="flex flex-col">
+                <a
+                  href={`/profile/${
+                    users.find((user) => user.userid === userid) &&
+                    users.find((user) => user.userid === userid).username
+                  }`}
+                >
+                  <h1 className="font-semibold text-sm">
+                    {
+                      // Finding username based on userid relevant to post
+                      users.find((user) => user.userid === userid) &&
+                        users.find((user) => user.userid === userid).username
+                    }
+                  </h1>
+                </a>
+
                 <p className="text-xs">{dayjs(created).fromNow()}</p>
               </div>
             </div>
