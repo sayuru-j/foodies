@@ -45,7 +45,7 @@ function Navigation() {
         Component={accessToken ? Settings : LoginToProceed}
       />
       <Route
-        path="/profile/:username"
+        path="/profile/:id/:username"
         Component={accessToken ? OtherProfiles : Login}
       />
     </Routes>
