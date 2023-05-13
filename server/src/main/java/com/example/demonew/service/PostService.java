@@ -23,8 +23,8 @@ public class PostService {
 
     //get
     public List<PostDTO> getAllPosts(){
-        List<Post>userList=postRepo.findAll();
-        return modelMapper.map(userList,new TypeToken<List<PostDTO>>(){}.getType());
+        List<Post>postList=postRepo.findAll();
+        return modelMapper.map(postList,new TypeToken<List<PostDTO>>(){}.getType());
     }
 
     //save
