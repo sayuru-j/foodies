@@ -153,16 +153,19 @@ function Profile() {
 
         {postIsOpened && (
           <>
-            <div className="h-screen bg-black fixed left-0 top-0 opacity-80 z-40 w-full flex">
+            <div
+              onClick={() => setPostIsOpened(!postIsOpened)}
+              className="h-screen bg-black fixed left-0 top-0 opacity-80 z-40 w-full flex"
+            >
               <PlusIcon
                 onClick={() => setPostIsOpened(!postIsOpened)}
                 className="w-8 text-white fixed right-2 top-2 rotate-45 cursor-pointer"
               />
             </div>
-            <div className="grid grid-cols-2 fixed z-50 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white shadow-sm w-full max-w-[100vh] rounded-sm">
+            <div className="grid grid-cols-2 fixed z-50 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white shadow-sm w-full max-w-[120vh] rounded-sm">
               <div className="relative">
                 <NoContextMenuImage
-                  className="rounded-sm object-contain h-full"
+                  className="rounded-sm object-contain w-full"
                   src={userPosts.find((post) => post.postid === postId).photo}
                   alt=""
                 />
