@@ -34,6 +34,7 @@ public class PostService {
         return postDTO;
     }
 
+    //update
     public PostDTO updatePost(int postId, PostDTO postDTO) {
         Optional<Post> optionalPost = postRepo.findById(postId);
         if (optionalPost.isPresent()) {
@@ -43,6 +44,11 @@ public class PostService {
             return postDTO;
         }
         return null;
+    }
+
+    public boolean deletePost(int postid) {
+        postRepo.deleteByPostid(postid);
+        return true;
     }
 
     public boolean addLike(int postId, int userId) {
@@ -76,8 +82,5 @@ public class PostService {
 }
 
 
-    public boolean deletePost(int postid) {
-        postRepo.deleteByPostid(postid);
-        return true;
-    }
+
 }
