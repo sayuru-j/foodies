@@ -15,7 +15,7 @@ public class PostController {
     private PostService postService;
 
     @GetMapping("/getPosts")
-    public List<PostDTO> getUser(){       //method in class ,objects get by userDto
+    public List<PostDTO> getPosts(){       //method in class ,objects get by userDto
         return postService.getAllPosts();
 
     }
