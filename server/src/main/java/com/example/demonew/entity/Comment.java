@@ -7,6 +7,10 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -21,5 +25,9 @@ public class Comment {
     private int postid;
     private int userid;
 
+    @CreationTimestamp
+    private LocalDateTime created;
 
+    @UpdateTimestamp
+    private LocalDateTime updated;
 }
