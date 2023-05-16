@@ -47,4 +47,11 @@ public class CommentService {
         }
         return null;
     }
+
+    //delete a comment
+    public boolean deleteComment(int commentid){
+        commentRepo.deleteByCommentid(commentid);
+        return true;
+    }
+    
 }
