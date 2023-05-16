@@ -17,6 +17,7 @@ import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
 import axios from "axios";
 import { useEffect } from "react";
 import { NavigationType, useNavigate } from "react-router-dom";
+import CommentItem from "../Comment/CommentItem";
 
 dayjs.extend(relativeTime);
 
@@ -37,6 +38,7 @@ function PostItemProfile({
   const [isCommenting, setIsCommenting] = useState(false);
   const [users, setUsers] = useState([]);
   const [isLiked, setIsLiked] = useState(likes.includes(uuid));
+  const [comments, setComments] = useState([]);
 
   const handleDelete = async (postid) => {
     const response = await axios.delete(
@@ -78,15 +80,32 @@ function PostItemProfile({
   // console.log(isLiked);
 
   const getUsers = async () => {
-    const response = await axios(
+    const response = await axios.get(
       `${import.meta.env.VITE_API_URL}/user/getUsers`
     );
 
     setUsers(response?.data);
   };
 
+  const getComments = async ({ postid }) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/comment/getComments`
+      );
+
+      const filteredComments = response.data.filter(
+        (comment) => comment.postid === postid
+      );
+
+      setComments(filteredComments);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getUsers();
+    getComments({ postid });
   }, []);
 
   return (
@@ -208,9 +227,15 @@ function PostItemProfile({
                 <span className="pl-1">Likes</span>
               </p>
 
-              <p className="text-sm text-blue-500/80 italic font-medium">
-                see comments
-              </p>
+              <div className="flex flex-col gap-2 pt-2 max-h-[150px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-black/10 scrollbar-track-black/10">
+                {comments?.map((comment) => (
+                  <CommentItem
+                    key={comment.commentid}
+                    {...comment}
+                    user={users.find((user) => user.userid === comment.userid)}
+                  />
+                ))}
+              </div>
             </div>
 
             <div className="px-3 py-3 relative flex items-center">
