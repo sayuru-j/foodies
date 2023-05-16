@@ -1,7 +1,6 @@
 package com.example.demonew.controller;
 
 import com.example.demonew.dto.CommentDTO;
-import com.example.demonew.dto.PostDTO;
 import com.example.demonew.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +22,8 @@ public class CommentController {
     }
 
     // Request for save a comment
-    @PostMapping("/savePost")
-    public CommentDTO savePost(@RequestBody CommentDTO commentDTO){
+    @PostMapping("/saveComment")
+    public CommentDTO saveComment(@RequestBody CommentDTO commentDTO){
         return commentService.saveComment(commentDTO);
 
 
@@ -36,6 +35,12 @@ public class CommentController {
         return commentService.updateComment(commentid, commentDTO);
 
 
+    }
+
+    // Request to delete a comment
+    @DeleteMapping("/deleteComment/{commentid}")
+    public boolean deleteComment(@PathVariable int commentid) {
+        return commentService.deleteComment(commentid);
     }
 
 }
