@@ -16,7 +16,8 @@ import {
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
 import axios from "axios";
 import { useEffect } from "react";
-import { NavigationType, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import CommentItem from "../Comment/CommentItem";
 
 dayjs.extend(relativeTime);
 
@@ -37,6 +38,7 @@ function PostItem({
   const [isCommenting, setIsCommenting] = useState(false);
   const [users, setUsers] = useState([]);
   const [isLiked, setIsLiked] = useState(likes.includes(uuid));
+  const [comments, setComments] = useState([]);
 
   const handleDelete = async (postid) => {
     const response = await axios.delete(
@@ -85,9 +87,28 @@ function PostItem({
     setUsers(response?.data);
   };
 
+  const getComments = async ({ postid }) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/comment/getComments`
+      );
+
+      const filteredComments = response.data.filter(
+        (comment) => comment.postid === postid
+      );
+
+      setComments(filteredComments);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getUsers();
+    getComments({ postid });
   }, []);
+
+  // console.log(comments);
 
   return (
     <>
@@ -128,6 +149,9 @@ function PostItem({
                 <a
                   href={`/profile/${
                     users.find((user) => user.userid === userid) &&
+                    users.find((user) => user.userid === userid).userid
+                  }/${
+                    users.find((user) => user.userid === userid) &&
                     users.find((user) => user.userid === userid).username
                   }`}
                 >
@@ -140,7 +164,7 @@ function PostItem({
                   </h1>
                 </a>
 
-                <p className="text-xs">{dayjs(created).fromNow()}</p>
+                <p className="text-xs opacity-90">{dayjs(created).fromNow()}</p>
               </div>
             </div>
             {!optionIsToggled ? (
@@ -207,15 +231,23 @@ function PostItem({
               <span className="pl-1">Likes</span>
             </p>
             <p className="text-sm">{caption}</p>
-            <p className="text-sm text-blue-500/80 italic font-medium">
-              see comments
-            </p>
+
+            <div className="flex flex-col gap-2 mt-4 max-h-[150px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-black/10 scrollbar-track-black/10">
+              {comments?.map((comment) => (
+                <CommentItem
+                  key={comment.commentid}
+                  {...comment}
+                  user={users?.find((user) => user.userid === comment.userid)}
+                  uuid={uuid}
+                />
+              ))}
+            </div>
           </div>
 
           <div
             className={`${
-              isCommenting ? "" : "hidden"
-            } px-3 py-1 relative flex items-center`}
+              !isCommenting ? "" : "hidden"
+            } px-3 py-1 relative flex items-center pt-2`}
           >
             <EmojiHappyIcon className="w-5 absolute left-5" />
             <input
