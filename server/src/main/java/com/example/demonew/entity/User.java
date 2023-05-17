@@ -23,6 +23,7 @@ public class User {
     private String email;
     private String fullname;
     private String avatar;
+    private String bio;
 
     @ElementCollection
     private List<Integer> following = new ArrayList<>();

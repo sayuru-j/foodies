@@ -39,7 +39,7 @@ public class PostService {
         Optional<Post> optionalPost = postRepo.findById(postId);
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
-            post.setCaption(postDTO.getCaption()); // Updates caption
+            post.setCaption(postDTO.getCaption());      // Updates caption
             postRepo.save(post);
             return postDTO;
         }

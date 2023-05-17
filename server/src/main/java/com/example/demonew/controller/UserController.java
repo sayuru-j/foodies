@@ -1,4 +1,5 @@
 package com.example.demonew.controller;
+import com.example.demonew.dto.PostDTO;
 import com.example.demonew.dto.UserDTO;
 import com.example.demonew.entity.User;
 import com.example.demonew.service.UserService;
@@ -32,6 +33,20 @@ public class UserController {
         return new ResponseEntity<>(userService.convertToDTO(user), HttpStatus.OK);
     }
 
+    @PutMapping("/updateUserbio/{userid}")
+    public UserDTO updateUserbio(@PathVariable int userid, @RequestBody UserDTO userDTO){
+        return userService.updateUserbio(userid, userDTO);
+
+    }
+
+    @DeleteMapping("/deleteUser/{userid}")
+    public boolean deleteUser(@PathVariable int userid) {
+
+        return userService.deleteUser(userid);
+    }
+
+
+
 
 
 
@@ -46,10 +61,9 @@ public class UserController {
     }
 
 
-
     @PutMapping("/userUpdate")
     public UserDTO updateUser(@RequestBody UserDTO userDTO){
-        return  userService.updateUser(userDTO);
+       return  userService.updateUser(userDTO);
 
 
     }
@@ -62,13 +76,15 @@ public class UserController {
     }
 
     @PostMapping("/followUser")
-    public boolean followUser(@RequestParam int uuid, @RequestParam int userId) {
+    public boolean followUser(@RequestParam int uuid, @RequestParam int userId) {  //use vvid
         return userService.followUser(uuid, userId);
+
     }
 
     @PostMapping("/unfollowUser")
-    public boolean unfollowUser(@RequestParam int uuid, @RequestParam int userId) {
+    public boolean unfollowUser(@RequestParam int uuid, @RequestParam int userId) {   //use userID
         return userService.removeFollow(uuid, userId);
+
     }
 
 

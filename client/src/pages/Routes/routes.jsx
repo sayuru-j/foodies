@@ -41,7 +41,7 @@ function Navigation() {
       />
       <Route path="/search" Component={accessToken ? Search : LoginToProceed} />
       <Route
-        path="/settings"
+        path="/settings/:userid/:bio1"
         Component={accessToken ? Settings : LoginToProceed}
       />
       <Route
