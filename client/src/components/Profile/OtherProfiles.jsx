@@ -68,7 +68,7 @@ function OtherProfiles() {
 
     getUsers(userdata.user); // Passing current userdata as props
     getPosts();
-  }, []);
+  }, [followStatus]);
 
   const handleFollow = async () => {
     const followResponse = await axios.post(`
