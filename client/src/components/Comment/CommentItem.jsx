@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useState } from "react";
 dayjs.extend(relativeTime);
+import { useNavigate } from "react-router-dom";
 
 function CommentItem({
   user,
@@ -17,6 +18,11 @@ function CommentItem({
   const [optionToggled, setOptionToggled] = useState(false);
   const [commentDeleted, setCommentDeleted] = useState(false);
   const [editToggled, setEditToggled] = useState(false);
+  const [commentEdit, setCommentEdit] = useState({
+    body: body,
+  });
+  const [commentUpdated, setCommentUpdated] = useState(false);
+  const navigate = useNavigate();
 
   const handleDeleteComment = async () => {
     let cid = commentid;
@@ -29,6 +35,31 @@ function CommentItem({
       if (response.data) {
         setCommentDeleted(true);
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChange = (item) => (e) => {
+    setCommentEdit({
+      ...commentEdit,
+      [item]: e.target.value,
+    });
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_API_URL}/comment/updateComment/${commentid}`,
+        {
+          body: commentEdit.body,
+        }
+      );
+
+      setCommentUpdated(response.data && true);
+      setCommentEdit(false);
+      navigate(0);
     } catch (error) {
       console.log(error);
     }
@@ -48,18 +79,37 @@ function CommentItem({
                 />
               </a>
 
-              <div className="flex gap-2 max-w-lg">
+              <div className="flex gap-2 max-w-lg pt-1">
                 <a href={`/profile/${user?.userid}/${user?.username}`}>
                   <h1 className="text-sm font-medium">{user?.username}</h1>
                 </a>
 
-                <p className="text-sm">{body}</p>
+                {!editToggled && <p className="text-sm">{body}</p>}
               </div>
             </div>
           </div>
-          <div className="flex items-center">
+
+          {editToggled && (
+            <input
+              id="message"
+              rows="4"
+              className="block p-1 px-2 w-1/2 text-xs mt-1 text-gray-900 bg-gray-50 rounded-md border border-gray-300 outline-none"
+              placeholder={body}
+              onChange={handleChange("body")}
+            />
+          )}
+          {editToggled && !optionToggled && (
+            <button
+              onClick={handleUpdate}
+              type="button"
+              className="font-medium text-sm bg-slate-50 shadow-sm mt-1 px-4 rounded-full"
+            >
+              OK
+            </button>
+          )}
+          <div className="flex items-center gap-2">
             {optionToggled ? (
-              <div className="flex absolute right-4 rounded-lg items-start">
+              <div className="flex absolute right-4 rounded-lg items-start pt-1">
                 {userid === uuid ? (
                   <div className="flex gap-1">
                     <button
@@ -92,7 +142,7 @@ function CommentItem({
                 )}
               </div>
             ) : (
-              <div className="flex gap-1 items-center justify-between">
+              <div className="flex gap-1 items-center justify-between pt-1">
                 <h1 className="text-xs font-thin opacity-70">
                   {created === updated
                     ? dayjs(created).fromNow()
@@ -102,7 +152,7 @@ function CommentItem({
             )}
             <DotsVerticalIcon
               onClick={() => setOptionToggled(!optionToggled)}
-              className="w-4 cursor-pointer"
+              className="w-4 cursor-pointer pt-1"
             />
           </div>
         </div>
