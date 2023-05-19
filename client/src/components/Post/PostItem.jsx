@@ -7,7 +7,6 @@ import {
   BookmarkIcon,
   ChatIcon,
   DotsHorizontalIcon,
-  EmojiHappyIcon,
   EyeOffIcon,
   HeartIcon,
   PaperAirplaneIcon,
@@ -17,7 +16,7 @@ import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import CommentItem from "../Comment/CommentItem";
+import Comment from "../Comment/Comment";
 
 dayjs.extend(relativeTime);
 
@@ -38,7 +37,6 @@ function PostItem({
   const [isCommenting, setIsCommenting] = useState(false);
   const [users, setUsers] = useState([]);
   const [isLiked, setIsLiked] = useState(likes.includes(uuid));
-  const [comments, setComments] = useState([]);
 
   const handleDelete = async (postid) => {
     const response = await axios.delete(
@@ -87,25 +85,8 @@ function PostItem({
     setUsers(response?.data);
   };
 
-  const getComments = async ({ postid }) => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/comment/getComments`
-      );
-
-      const filteredComments = response.data.filter(
-        (comment) => comment.postid === postid
-      );
-
-      setComments(filteredComments);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     getUsers();
-    getComments({ postid });
   }, []);
 
   // console.log(comments);
@@ -231,36 +212,9 @@ function PostItem({
               <span className="pl-1">Likes</span>
             </p>
             <p className="text-sm">{caption}</p>
-
-            <div className="flex flex-col gap-2 mt-4 max-h-[150px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-black/10 scrollbar-track-black/10">
-              {comments?.map((comment) => (
-                <CommentItem
-                  key={comment.commentid}
-                  {...comment}
-                  user={users?.find((user) => user.userid === comment.userid)}
-                  uuid={uuid}
-                />
-              ))}
-            </div>
           </div>
 
-          <div
-            className={`${
-              !isCommenting ? "" : "hidden"
-            } px-3 py-1 relative flex items-center pt-2`}
-          >
-            <EmojiHappyIcon className="w-5 absolute left-5" />
-            <input
-              className="w-full bg-slate-100 focus:outline-none rounded-full text-sm py-2 px-8"
-              type="text"
-            />
-            <button
-              className="font-medium absolute right-7 text-sm text-blue-600/80 hover:text-blue-600"
-              type="button"
-            >
-              Comment
-            </button>
-          </div>
+          <Comment postid={postid} users={users} uuid={uuid} />
         </div>
       )}
     </>
