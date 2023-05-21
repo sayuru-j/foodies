@@ -19,6 +19,7 @@ function OtherProfiles() {
     email: "",
     fullname: "",
     city: "",
+    bio: "",
     followers: [],
     following: [],
   });
@@ -113,14 +114,16 @@ function OtherProfiles() {
                 {followStatus ? (
                   <div className="">
                     <button
-                      onClick={handleUnfollow}
+                     // onClick={handleUnfollow} 
+                      onClick={ handleUnfollow }
                       type="button"
                       className="bg-blue-500 absolute top-[6px] z-10 text-white font-medium px-4 rounded-full hover:opacity-0 transition-all duration-[50ms] ease-out text-xs"
                     >
                       Following
                     </button>
                     <button
-                      onClick={handleUnfollow}
+                     // onClick={handleUnfollow}
+                     onClick={ handleUnfollow }
                       type="button"
                       className="bg-secondary/50 absolute top-[6px] z-0 text-white font-medium px-4 rounded-full text-xs"
                     >
@@ -130,7 +133,8 @@ function OtherProfiles() {
                 ) : (
                   <div>
                     <button
-                      onClick={handleFollow}
+                      //onClick={handleFollow}
+                      onClick={ handleFollow }
                       type="button"
                       className="bg-blue-500 absolute top-[6px] z-10 text-white font-medium px-4 rounded-full text-xs"
                     >
@@ -163,6 +167,7 @@ function OtherProfiles() {
                     : userDetails?.username?.toLocaleUpperCase()}
                 </h1>
                 <p className="text-sm font-thin">{userDetails?.email}</p>
+                <p className="text-sm font-thin">{userDetails?.bio}</p>
               </div>
             </div>
           </div>

@@ -17,6 +17,7 @@ function Profile() {
     username: "",
     fullname: "",
     city: "",
+    bio: "",
     followers: [],
     following: [],
   });
@@ -82,7 +83,7 @@ function Profile() {
                     .toLowerCase()
                     .replace(/\s/g, "")}
                 </h1>
-                <a href="/settings">
+                <a href ={`/settings/${userDetails.userid}/${userDetails.bio}`}>
                   <CogIcon className="w-5 cursor-pointer" />
                 </a>
               </div>
@@ -108,6 +109,8 @@ function Profile() {
                   {loginDetails?.user?.fullname}
                 </h1>
                 <p className="text-sm font-thin">{loginDetails?.user?.email}</p>
+                <p className="text-sm font-thin">{userDetails.bio}</p>
+                
               </div>
             </div>
           </div>

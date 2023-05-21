@@ -11,7 +11,11 @@
   },
   "dependencies": {
     "@cloudinary/react": "^1.11.2",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
     "@heroicons/react": "^1.0.6",
+    "@mui/joy": "^5.0.0-alpha.79",
+    "@mui/material": "^5.13.1",
     "axios": "^1.4.0",
     "cloudinary-core": "^2.13.0",
     "cloudinary-react": "^1.8.1",

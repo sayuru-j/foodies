@@ -19,6 +19,7 @@ public class UserDTO {
     private String email;
     private String fullname;
     private String avatar;
+    private String bio;
 
     private List<Integer> following;
     private List<Integer> followers;
